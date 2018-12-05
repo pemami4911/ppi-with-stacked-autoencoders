@@ -1,0 +1,8 @@
+*.ipynb_checkpoints/
+__pycache__/
+model_checkpoints/
+data/human_ac/
+data/human_ct/
+data/negativeSimTest/
+data/yeast_ac/
+data/yeast_ct/
