@@ -8,5 +8,7 @@ FASTA sequences available in `data/human.fasta` and `data/yeast.fasta`. Labels a
 
 ## Training
 
-See the options in `train.py`. An example for training SAE on human AC data. Default is 100 epochs and batch size of 100. 
-  ```python train.py --model classifier --data-type human --data-dir data/human_ac --feature-type AC --debug False --num-folds-to-use 10 --input-size 280 --hidden-layer-size 400 --lr 0.01```
+See the options in `train.py`. An example for training SAE on human AC data. Default is 100 epochs and batch size of 100.
+```python
+python train.py --model classifier --data-type human --data-dir data/human_ac --feature-type AC --debug False --num-folds-to-use 10 --input-size 280 --hidden-layer-size 400 --lr 0.01
+```
