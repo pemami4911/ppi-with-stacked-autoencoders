@@ -21,3 +21,7 @@ See the options in `train.py`. An example for training SAE on human AC data. Def
 ```python
 python train.py --model classifier --data-type human --data-dir data/human_ac --feature-type AC --debug False --num-folds-to-use 10 --input-size 280 --hidden-layer-size 400 --lr 0.01
 ```
+
+## Performance
+
+We got ~98% and ~100% validation prediction accuracy averaged over 10 folds for human and yeast datasets, respectively. 
