@@ -1,22 +1,8 @@
 ## Autocovariance method
 
-Yeast sequences that had to be excluded because length < 31 amino acids.
-* P08521
-* P0C1Z1
-* P0CX86
-* P0CX87
-* Q3E741
-* Q3E775
-* Q3E7Z6
-* Q3E801
-* Q3E838
-* Q8TGJ2
-* Q8TGN3
-* Q8TGS6
-* Q8TGS7
-* Q8TGT6
-* Q8TGT8
-* Q8TGU0
-* Q8TGV0
+See `yeast_ac/ignore.txt` for list of proteins that will be excluded because length is less than `lag=30`.
+See `human_ac/ignore.txt` for list of proteins that will be excluded because length is less than `lag=20`. Proteins with `U` and `X` amino acids are also excluded.
 
-Yeast CT - frequency normalization is 29 (95% of max frq values are less than 29).
+* Yeast/Human AC - the physicochemical table (see https://github.com/pemami4911/ppi-with-stacked-autoencoders/blob/master/data_preprocessing.ipynb) is normalized column-wise to be mean zero gaussian
+* Yeast CT - frequency values are normalized by dividing through by 29 (95% of max frq values are less than 29). 
+* Human CT - frequency values are normalized by dividing through by 33 (" " ")
