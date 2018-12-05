@@ -7,6 +7,10 @@ This is based on the Human and Yeast data used in the Profppikernel paper [[see 
 
 FASTA sequences available in `data/human.fasta` and `data/yeast.fasta`. Labels available in `data/negativeSimTest.zip`. The FASTA files encoded using the Autocovariance (AC) method and Conjoint Triad (CT) method are stored as .npy files in `data/human_ac.zip`, `data/human_ct.zip`, `data/yeast_ac.zip`, `data/yeast_ct.zip`. For the human data, the lag in the Autocovariance method is 20, and for yeast, it is 30. Hence, human AC vectors are dim 140 and yeast AC vectors are dim 210. The model input size for human AC is 280 and is 420 for yeast. The model input size for CT is 686 for both human and yeast data.
 
+## Autocovariance and conjoint triad
+
+These algorithms for featurizing FASTA sequences are implemented in the [data preprocessing notebook](https://github.com/pemami4911/ppi-with-stacked-autoencoders/blob/master/data_preprocessing.ipynb).
+
 ## Hyperparameters
 
 For AC, use 400 hidden units (--hidden-layer-size) and for CT, use 700 hidden units. We had good results with the Adam optimizer (default) with learning rate 0.01. We used batch size of 100 and trained for 100 epochs. Results are averaged over 10 fold cross-validation.
