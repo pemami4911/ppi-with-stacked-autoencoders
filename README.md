@@ -24,4 +24,4 @@ python train.py --model classifier --data-type human --data-dir data/human_ac --
 
 ## Performance
 
-We got ~98% and ~100% validation prediction accuracy averaged over 10 folds for human and yeast datasets, respectively. 
+We got ~62% and ~60% validation prediction accuracy averaged over 10 folds for human and yeast datasets, respectively. 

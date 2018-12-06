@@ -70,7 +70,15 @@ def compute_metrics(predictions, labels):
         precision = 0
     else:
         precision = tp/(tp+fp)
-    return precision, tp/(tp+fn), fp/(fp+tn), 1 - fp/(fp+tn), 1 - tp/(tp+fn), (tp + tn)/(num_pos + num_neg)
+    if fp == 0 and tn == 0:
+        fp_tn = 1
+    else:
+        fp_tn = fp+tn
+    if tp == 0 and fn == 0:
+        tp_fn = 1
+    else:
+        tp_fn = tp+fn
+    return precision, tp/tp_fn, fp/fp_tn, 1 - fp/fp_tn, 1 - tp/tp_fn, (tp + tn)/(num_pos + num_neg)
 
 if args.prediction_threshold != -1:
     pred_thresholds = [args.prediction_threshold]
@@ -97,7 +105,7 @@ for pt in pred_thresholds:
             # Create dataloaders
             train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,
                     shuffle=True, pin_memory=True, num_workers=args.num_workers, drop_last=False)
-            test_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,
+            test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size,
                     shuffle=False, pin_memory=True, num_workers=args.num_workers, drop_last=False)
 
             # models
@@ -189,24 +197,26 @@ for pt in pred_thresholds:
                         best_test_loss = np.mean(losses)
                         #model_file_name = "model-{}-best.pth".format(args.model)
                         #torch.save(model.state_dict(), os.path.join(checkpoint_dir, model_file_name))
-
-                    if np.mean(epoch_ppv) > best_ppv:
-                        best_ppv = np.mean(epoch_ppv)
-                    if np.mean(epoch_tpr) > best_tpr:
-                        best_tpr = np.mean(epoch_tpr)
-                    if np.mean(epoch_fpr) < best_fpr:
-                        best_fpr = np.mean(epoch_fpr)
-                    if np.mean(epoch_tnr) > best_tnr:
-                        best_tnr = np.mean(epoch_tnr)
-                    if np.mean(epoch_fnr) < best_fnr:
-                        best_fnr = np.mean(epoch_fnr)
-            cv_ppv.append(best_ppv)
-            cv_tpr.append(best_tpr)
-            cv_fpr.append(best_fpr)
-            cv_tnr.append(best_tnr)
-            cv_fnr.append(best_fnr)
-            cv_acc.append(1 - best_test_loss)
-        if not args.debug:
+                    
+                    if args.model.lower() == "classifier":
+                        if np.mean(epoch_ppv) > best_ppv:
+                            best_ppv = np.mean(epoch_ppv)
+                        if np.mean(epoch_tpr) > best_tpr:
+                            best_tpr = np.mean(epoch_tpr)
+                        if np.mean(epoch_fpr) < best_fpr:
+                            best_fpr = np.mean(epoch_fpr)
+                        if np.mean(epoch_tnr) > best_tnr:
+                            best_tnr = np.mean(epoch_tnr)
+                        if np.mean(epoch_fnr) < best_fnr:
+                            best_fnr = np.mean(epoch_fnr)
+            if not args.debug and args.model.lower() == "classifier":    
+                cv_ppv.append(best_ppv)
+                cv_tpr.append(best_tpr)
+                cv_fpr.append(best_fpr)
+                cv_tnr.append(best_tnr)
+                cv_fnr.append(best_fnr)
+                cv_acc.append(1 - best_test_loss)
+        if not args.debug and args.model.lower() == "classifier":
             # write results to CSV for processing
             for name, arr in zip(["ppv", "acc", "tpr", "fpr", "tnr", "fnr"], [cv_ppv, cv_acc, cv_tpr, cv_fpr, cv_tnr, cv_fnr]):
                 with open(os.path.join(checkpoint_dir, "{}-results-threshold-{}-repetition-{}.csv").format(
